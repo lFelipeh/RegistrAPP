@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserDataService } from 'src/app/services/user-data.service';
+import { ViajesService } from '../../services/viajes.service';
+import { Viaje } from '../../services/viajes.service';
+import { Router } from '@angular/router';
+import { UserDataService } from '../../services/user-data.service';
+import { RolUsuarioService } from '../../services/rol-usuario.service';
 
 @Component({
   selector: 'app-welcome',
@@ -7,11 +11,34 @@ import { UserDataService } from 'src/app/services/user-data.service';
   styleUrls: ['./welcome.page.scss'],
 })
 export class WelcomePage implements OnInit {
-  username: string;
+  nombreUsuario: string = '';
+  email: string = '';
+  viajes: Viaje[] = [];
+  esPasajero: boolean = false;
+  esDuenoVehiculo: boolean = false;
 
-  constructor(private userDataService: UserDataService) {
-    this.username = this.userDataService.getUsername();
+  constructor(
+     private viajesService: ViajesService,
+     private router: Router,
+     private userDataService: UserDataService,
+     private rolUsuarioService: RolUsuarioService
+  ) { } 
+
+  reservar(viaje: Viaje) {
+    alert(`Reserva confirmada para el viaje a ${viaje.destino}. Se ha enviado una confirmación a tu correo y al dueño del vehículo.`);
   }
 
-  ngOnInit() {}
+  agregarViaje() {
+    this.router.navigateByUrl('/crear-viaje');
+  }
+
+  ngOnInit() {
+    this.email = this.userDataService.getNombreUsuario();
+    this.nombreUsuario = this.email.split('@')[0];
+    console.log("Nombre de usuario procesado:", this.nombreUsuario);
+    console.log("Email obtenido del servicio:", this.email);
+    this.viajes = this.viajesService.obtenerViajes();
+    this.esPasajero = this.rolUsuarioService.esPasajero();
+    this.esDuenoVehiculo = this.rolUsuarioService.esDuenoVehiculo();
+  }
 }

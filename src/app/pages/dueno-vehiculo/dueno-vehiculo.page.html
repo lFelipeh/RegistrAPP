@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Bienvenido, {{nombreUsuario}} a RegistrAPP
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="viajeForm" (ngSubmit)="agregarViaje()">
+    <ion-item>
+      <ion-label position="floating">Nombre del Conductor</ion-label>
+      <ion-input type="text" formControlName="nombre"></ion-input>
+    </ion-item>    
+    <ion-item>
+      <ion-label position="floating">Hora de Salida</ion-label>
+      <ion-input type="time" formControlName="horaSalida"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Destino</ion-label>
+      <ion-input type="text" formControlName="destino"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Costo por Persona</ion-label>
+      <ion-input type="number" formControlName="costo"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit" [disabled]="!viajeForm.valid">Agregar Viaje</ion-button>
+  </form>
+
+  <ion-button expand="full" (click)="seleccionarRol()">Volver a Seleccionar Rol</ion-button>
+</ion-content>

@@ -4,15 +4,30 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UserDataService {
-  private username: string = '';
+  private correoUsuario: string = '';
+  private nombreUsuario: string = '';
+  private rol: string = '';
 
   constructor() { }
 
   setUsername(email: string) {
-    this.username = email.split('@')[0];
+    this.correoUsuario = email;
+    this.nombreUsuario = email.split('@')[0];
   }
 
-  getUsername(): string {
-    return this.username;
+  getCorreoUsuario(): string {
+    return this.correoUsuario;
+  }
+
+  getNombreUsuario(): string {
+    return this.nombreUsuario;
+  }
+
+  setRol(rol: string) {
+    this.rol = rol;
+  }
+  
+  getRol(): string {
+    return this.rol;
   }
 }

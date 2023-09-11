@@ -1,13 +1,19 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Bienvenido a RegistrAPP
+      Bienvenido, {{nombreUsuario}} a RegistrAPP
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-label>
-    ¡Bienvenido, {{ username }} a RegistrAPP!
-  </ion-label>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let viaje of viajes">
+      <ion-label>{{ viaje.conductor }} - {{ viaje.horaSalida }} - {{ viaje.destino }} - {{ viaje.costo }}</ion-label>
+      <ion-button fill="outline" slot="end" (click)="reservar(viaje)">Reservar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Opciones para el dueño del vehículo -->
+  <ion-button expand="full" color="primary" (click)="agregarViaje()">Agregar Viaje</ion-button>
 </ion-content>

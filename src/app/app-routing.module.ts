@@ -43,6 +43,22 @@ const routes: Routes = [
     path: 'forgot-password',
     loadChildren: () => import('./pages/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
   },
+  {
+    path: 'seleccionar-rol',
+    loadChildren: () => import('./pages/seleccionar-rol/seleccionar-rol.module').then( m => m.SeleccionarRolPageModule)
+  },
+  {
+    path: 'pasajero',
+    loadChildren: () => import('./pages/pasajero/pasajero.module').then( m => m.PasajeroPageModule)
+  },
+  {
+    path: 'dueno-vehiculo',
+    loadChildren: () => import('./pages/dueno-vehiculo/dueno-vehiculo.module').then( m => m.DuenoVehiculoPageModule)
+  },
+  {
+    path: 'dueno-vehiculo',
+    loadChildren: () => import('./pages/dueno-vehiculo/dueno-vehiculo.module').then( m => m.DuenoVehiculoPageModule)
+  }
 ];
 
 @NgModule({

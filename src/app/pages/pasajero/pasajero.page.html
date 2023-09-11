@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Bienvenido, {{nombreUsuario}} a RegistrAPP
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let viaje of viajes">
+      <ion-label>{{ viaje.conductor }} - {{ viaje.horaSalida }} - {{ viaje.destino }} - {{ viaje.costo }}</ion-label>
+      <ion-button fill="outline" slot="end" (click)="reservar(viaje)">Reservar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Formulario para enviar el correo al pasajero -->
+  <form id="emailFormPasajero" action="https://formspree.io/f/mvojrjnd" method="POST" style="display: none;">
+    <input type="email" name="email" [value]="correoUsuario">
+    <textarea name="message" [value]="mensajeReservaPasajero"></textarea>
+  </form>
+
+  <!-- Formulario para enviar el correo al conductor 
+  <form id="emailFormConductor" action="https://formspree.io/f/mvojrjnd" method="POST" style="display: none;">
+    <input type="email" name="email" [value]="correoConductorActual">
+    <textarea name="message" [value]="mensajeReservaConductor"></textarea>
+  </form>
+-->
+  <!-- Botón para volver a Seleccionar Rol -->
+  <ion-button expand="full" (click)="seleccionarRol()">Volver a Seleccionar Rol</ion-button>
+</ion-content>
