@@ -6,29 +6,39 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <form [formGroup]="viajeForm" (ngSubmit)="agregarViaje()">
     <ion-item>
       <ion-label position="floating">Nombre del Conductor</ion-label>
-      <ion-input type="text" formControlName="nombre"></ion-input>
-    </ion-item>    
+      <ion-input type="text" formControlName="conductor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Correo del Conductor</ion-label>
+      <ion-input type="email" formControlName="correoConductor"></ion-input>
+    </ion-item>
     <ion-item>
       <ion-label position="floating">Hora de Salida</ion-label>
       <ion-input type="time" formControlName="horaSalida"></ion-input>
     </ion-item>
-
+    <ion-label position="floating">Desde</ion-label>
+    <ion-input type="text" formControlName="desde"></ion-input>
     <ion-item>
       <ion-label position="floating">Destino</ion-label>
       <ion-input type="text" formControlName="destino"></ion-input>
     </ion-item>
-
+    <ion-item>
+      <ion-label position="floating">Ruta Opcional</ion-label>
+      <ion-input type="text" formControlName="rutaOpcional"></ion-input>
+    </ion-item>
     <ion-item>
       <ion-label position="floating">Costo por Persona</ion-label>
       <ion-input type="number" formControlName="costo"></ion-input>
     </ion-item>
-
+    <ion-item>
+      <ion-label position="floating">Asientos disponibles</ion-label>
+      <ion-input type="number" formControlName="asientosTotales"></ion-input>
+    </ion-item>
     <ion-button expand="full" type="submit" [disabled]="!viajeForm.valid">Agregar Viaje</ion-button>
   </form>
-
   <ion-button expand="full" (click)="seleccionarRol()">Volver a Seleccionar Rol</ion-button>
 </ion-content>

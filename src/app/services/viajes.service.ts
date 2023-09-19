@@ -1,55 +1,54 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage-angular';
 
-// Definición de la interfaz Viaje
 export interface Viaje {
   id: number;
   conductor: string;
   correoConductor: string;
   horaSalida: string;
+  desde: string;
   destino: string;
+  rutaOpcional: string;
   costo: number;
+  asientosTotales: number;
+  asientosReservados: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ViajesService {
-  private viajes: Viaje[] = [
-    {
-      id: 1,
-      conductor: 'Juan Pérez',
-      correoConductor: 'keziaql@gmail.com', 
-      horaSalida: '18:00',
-      destino: 'Metro San Miguel',
-      costo: 1000
-    },
-    {
-      id: 2,
-      conductor: 'Maria Rodríguez',
-      correoConductor: 'keziaql@gmail.com',
-      horaSalida: '19:00',
-      destino: 'Metro Maipú',
-      costo: 2000
-    },
-    {
-      id: 3,
-      conductor: 'Carlos Soto',
-      correoConductor: 'keziaql@gmail.com',
-      horaSalida: '20:00',
-      destino: 'Metro Grecia',
-      costo: 1000
-    }
-  ];
+  private _storage: Storage | null = null;
 
-  constructor() { }
-
-  //obtener la lista de viajes
-  obtenerViajes() {
-    return this.viajes;
+  constructor(private storage: Storage) {
+    this.init();
   }
 
-  //agregar un nuevo viaje a la lista
-  agregarViaje(viaje: Viaje) {
-    this.viajes.push(viaje);
+  async init() {
+    const storage = await this.storage.create();
+    this._storage = storage;
+  }
+
+  async obtenerViajes(): Promise<Viaje[]> {
+    const viajes = await this._storage?.get('viajes');
+    return viajes || [];
+  }
+
+  async agregarViaje(viaje: Viaje) {
+    const viajes = await this.obtenerViajes();
+    viajes.push(viaje);
+    return this._storage?.set('viajes', viajes);
+  }
+
+  async reservarViaje(conductor: string, horaSalida: string): Promise<boolean> {
+    const viajes = await this.obtenerViajes();
+    const viajeIndex = viajes.findIndex(v => v.conductor === conductor && v.horaSalida === horaSalida);
+
+    if (viajeIndex !== -1 && viajes[viajeIndex].asientosTotales > viajes[viajeIndex].asientosReservados) {
+      viajes[viajeIndex].asientosReservados++;
+      await this._storage?.set('viajes', viajes);
+      return true;
+    }
+    return false;
   }
 }

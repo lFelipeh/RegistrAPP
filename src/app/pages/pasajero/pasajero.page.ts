@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ViajesService } from '../../services/viajes.service';
-import { Viaje } from '../../services/viajes.service';
+import { ViajesService, Viaje } from '../../services/viajes.service';
 import { Router } from '@angular/router';
 import { UserDataService } from '../../services/user-data.service';
 import { RolUsuarioService } from '../../services/rol-usuario.service';
@@ -14,11 +13,9 @@ export class PasajeroPage implements OnInit {
   nombreUsuario: string = '';
   correoUsuario: string = '';
   viajes: Viaje[] = [];
-  esPasajero: boolean = false;
-  esDuenoVehiculo: boolean = false;
   mensajeReservaPasajero: string = '';
   mensajeReservaConductor: string = '';
-  correoConductorActual: string = '';
+  correoConductorSeleccionado: string = '';
 
   constructor(
     private viajesService: ViajesService,
@@ -27,39 +24,32 @@ export class PasajeroPage implements OnInit {
     private rolUsuarioService: RolUsuarioService
   ) { }
 
-  reservar(viaje: Viaje) {
+  async reservar(viaje: Viaje) {
+    viaje.asientosReservados += 1;
+    const viajes = await this.viajesService.obtenerViajes();
+    const viajeIndex = viajes.findIndex(v => v.id === viaje.id);
+    viajes[viajeIndex] = viaje;
+    await this.viajesService.agregarViaje(viaje);
+
     this.mensajeReservaPasajero = `Confirmación de reserva para el viaje con ${viaje.conductor} hacia ${viaje.destino} a las ${viaje.horaSalida}. Costo: ${viaje.costo}`;
-   // this.correoConductorActual = viaje.correoConductor
     this.mensajeReservaConductor = `${this.nombreUsuario} ha reservado un viaje contigo hacia ${viaje.destino} a las ${viaje.horaSalida}.`;
-  
-    // Logs para depuración
-    console.log("Correo del usuario:", this.correoUsuario);
-    console.log("Mensaje de reserva para el pasajero:", this.mensajeReservaPasajero);
-   // console.log("Correo del conductor:", this.correoConductorActual);
-   // console.log("Mensaje de reserva para el conductor:", this.mensajeReservaConductor);
-  
-    if (this.correoUsuario && this.mensajeReservaPasajero) {
-      const formPasajero = document.getElementById('emailFormPasajero') as HTMLFormElement;
-      formPasajero.submit();
-    }
-  
-//    if (this.correoConductorActual && this.mensajeReservaConductor) {
-//      const formConductor = document.getElementById('emailFormConductor') as HTMLFormElement;
- //     formConductor.submit();
-//    }
+    this.correoConductorSeleccionado = viaje.correoConductor;
+
+    const formPasajero = document.getElementById('emailFormPasajero') as HTMLFormElement;
+    formPasajero.submit();
+
+    const formConductor = document.getElementById('emailFormConductor') as HTMLFormElement;
+    formConductor.submit();
   }
-  
 
   agregarViaje() {
     this.router.navigateByUrl('/crear-viaje');
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.correoUsuario = this.userDataService.getCorreoUsuario();
     this.nombreUsuario = this.userDataService.getNombreUsuario();
-    this.viajes = this.viajesService.obtenerViajes();
-    this.esPasajero = this.rolUsuarioService.esPasajero();
-    this.esDuenoVehiculo = this.rolUsuarioService.esDuenoVehiculo();
+    this.viajes = await this.viajesService.obtenerViajes();
   }
 
   seleccionarRol() {

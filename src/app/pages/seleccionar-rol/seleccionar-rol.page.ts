@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserDataService } from '../../services/user-data.service';
 import { Router } from '@angular/router';
+import { RolUsuarioService } from '../../services/rol-usuario.service';
+import { UserDataService } from '../../services/user-data.service';
 
 @Component({
   selector: 'app-seleccionar-rol',
@@ -9,21 +10,22 @@ import { Router } from '@angular/router';
 })
 export class SeleccionarRolPage implements OnInit {
   nombreUsuario: string = '';
-
   constructor(
     private userDataService: UserDataService,
-    private router: Router
+    private router: Router,
+    private rolUsuarioService: RolUsuarioService
   ) { }
 
   ngOnInit() {
-    const email = this.userDataService.getNombreUsuario();
-    this.nombreUsuario = email.split('@')[0];
+    this.nombreUsuario = this.userDataService.getNombreUsuario().split('@')[0];
   }
 
-  seleccionarRol(rol: string) {
+  async seleccionarRol(rol: string) {
+    this.rolUsuarioService.seleccionarRol(rol);
+  
     if (rol === 'pasajero') {
       this.router.navigateByUrl('/pasajero');
-    } else {
+    } else if (rol === 'duenoVehiculo') {
       this.router.navigateByUrl('/dueno-vehiculo');
     }
   }

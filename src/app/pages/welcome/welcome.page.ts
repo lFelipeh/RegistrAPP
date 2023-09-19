@@ -32,12 +32,12 @@ export class WelcomePage implements OnInit {
     this.router.navigateByUrl('/crear-viaje');
   }
 
-  ngOnInit() {
-    this.email = this.userDataService.getNombreUsuario();
+  async ngOnInit() {
+    this.email = await this.userDataService.getNombreUsuario();
     this.nombreUsuario = this.email.split('@')[0];
     console.log("Nombre de usuario procesado:", this.nombreUsuario);
     console.log("Email obtenido del servicio:", this.email);
-    this.viajes = this.viajesService.obtenerViajes();
+    this.viajes = await this.viajesService.obtenerViajes();
     this.esPasajero = this.rolUsuarioService.esPasajero();
     this.esDuenoVehiculo = this.rolUsuarioService.esDuenoVehiculo();
   }

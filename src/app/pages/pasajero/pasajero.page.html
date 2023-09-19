@@ -8,10 +8,13 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let viaje of viajes">
-      <ion-label>{{ viaje.conductor }} - {{ viaje.horaSalida }} - {{ viaje.destino }} - {{ viaje.costo }}</ion-label>
-      <ion-button fill="outline" slot="end" (click)="reservar(viaje)">Reservar</ion-button>
-    </ion-item>
+    <ng-container *ngFor="let viaje of viajes">
+      <!-- Aplicamos *ngIf dentro del ion-item -->
+      <ion-item *ngIf="viaje.asientosTotales > viaje.asientosReservados">
+        <ion-label>{{ viaje.conductor }} - {{ viaje.horaSalida }} -Desde-Hasta: {{ viaje.desde }} - {{ viaje.destino }} - Ruta opcional: {{ viaje.rutaOpcional }}- Costo: {{ viaje.costo }} - Asientos disponibles: {{ viaje.asientosTotales - viaje.asientosReservados }}</ion-label>
+        <ion-button fill="outline" slot="end" (click)="reservar(viaje)">Reservar</ion-button>
+      </ion-item>
+    </ng-container>
   </ion-list>
 
   <!-- Formulario para enviar el correo al pasajero -->
